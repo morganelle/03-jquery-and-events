@@ -68,8 +68,9 @@ articleView.handleMainNav = function () {
 
 articleView.setTeasers = function() {
   // Truncate logic to show only first two elements within the article body. (find first two DOM els)
+  // $('.article-body:lt(2)').show();
   $('.article-body *:nth-of-type(n+2)').hide();
-  /* TODO: Add a delegated event handler to reveal the remaining paragraphs.
+  /* DONE: Add a delegated event handler to reveal the remaining paragraphs.
     When a .read-on link is clicked, we can:
     1. Prevent the default action of a link.
     2. Reveal everything in that particular article now.
@@ -77,10 +78,24 @@ articleView.setTeasers = function() {
 
     // STRETCH GOAl!: change the 'Read On' link to 'Show Less'
   */
+  var $link = $('a.read-on');
+  $link.removeAttr('href')
+  // event handler
+  $link.on('click', function() {
+    if ($(this).text() === 'Show Less') {
+      $(this).html('Read On &rarr;');
+    }
+    else {
+      $(this).html('Show Less');
+    }
+    // Toggles display / hide on all article-body child elements aside from the first two
+    $(this).parent().find('.article-body *:nth-of-type(n+2)').toggle();
+  });
 };
 
-// TODO: Invoke all of the above functions (I mean, methods!):
+// DONE: Invoke all of the above functions (I mean, methods!):
 articleView.populateFilters();
 articleView.handleAuthorFilter();
 articleView.handleCategoryFilter();
 articleView.handleMainNav();
+articleView.setTeasers();
